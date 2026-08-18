@@ -44,9 +44,9 @@ jobs:
               );
             }
 
-            // 台灣時間 2027/2/3 下午 6 點
+            // 台灣時間 2027/3/5 下午 6 點
             const targetTime =
-              new Date("2027-02-03T18:00:00+08:00").getTime();
+              new Date("2027-03-05T18:00:00+08:00").getTime();
 
             const remaining = targetTime - Date.now();
 
@@ -68,17 +68,13 @@ jobs:
                 (remaining % 3600000) / 60000
               );
 
-            /*
-              把這裡換成目前確定可以正常開啟的
-              Cloudflare Pages 網址。
-            */
             const websiteUrl =
               "https://blue-freedom-day-2027.pages.dev/?v=20270305";
 
             const message = [
               "🕊️ 離職倒數",
               "",
-              "距離 2027/2/3 下午 6:00",
+              "距離 2027/3/5 下午 6:00",
               `還有 ${days} 天 ${hours} 小時 ${minutes} 分鐘！`,
               "",
               "每天都離自由更近一點 💙",
