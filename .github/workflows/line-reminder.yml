@@ -73,7 +73,7 @@ jobs:
               Cloudflare Pages 網址。
             */
             const websiteUrl =
-              "https://blue-freedom-day-2027.pages.dev/";
+              "https://blue-freedom-day-2027.pages.dev/?v=20270305";
 
             const message = [
               "🕊️ 離職倒數",
