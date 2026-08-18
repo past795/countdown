@@ -2,148 +2,366 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>我們的倒數計時</title>
-  <meta property="og:title" content="我們的倒數計時">
-  <meta property="og:description" content="點進來看看還剩多少時間！">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <title>離職倒數</title>
+
+  <!-- 分享到 LINE 時顯示的標題 -->
+  <meta property="og:title" content="離職倒數｜距離自由還有多久？">
+  <meta property="og:description" content="2027 年 2 月 3 日，我自由啦！">
+  <meta property="og:type" content="website">
+
+  <meta name="theme-color" content="#0756bd">
 
   <style>
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
       margin: 0;
+      min-height: 100%;
+    }
+
+    body {
       min-height: 100vh;
+      min-height: 100svh;
       display: grid;
       place-items: center;
-      padding: 24px;
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                   "Noto Sans TC", sans-serif;
+      padding:
+        max(24px, env(safe-area-inset-top))
+        20px
+        max(24px, env(safe-area-inset-bottom));
+
+      overflow-x: hidden;
+      color: #ffffff;
       text-align: center;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        sans-serif;
+
       background:
-        radial-gradient(circle at top, #ff91ac, transparent 45%),
-        linear-gradient(145deg, #ff4d79, #6c3cff);
+        radial-gradient(
+          circle at 50% 0%,
+          rgba(80, 208, 255, 0.95),
+          transparent 43%
+        ),
+        radial-gradient(
+          circle at 10% 90%,
+          rgba(38, 112, 255, 0.75),
+          transparent 45%
+        ),
+        linear-gradient(
+          145deg,
+          #063f9c 0%,
+          #075ed1 48%,
+          #031d50 100%
+        );
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    body::before {
+      top: -90px;
+      right: -70px;
+      width: 240px;
+      height: 240px;
+      background: rgba(72, 210, 255, 0.3);
+    }
+
+    body::after {
+      bottom: -100px;
+      left: -80px;
+      width: 270px;
+      height: 270px;
+      background: rgba(77, 122, 255, 0.28);
     }
 
     .card {
-      width: min(440px, 100%);
-      padding: 38px 20px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.16);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
-      backdrop-filter: blur(14px);
+      position: relative;
+      z-index: 1;
+      width: min(520px, 100%);
+      padding: 42px 22px 30px;
+
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 30px;
+
+      background: rgba(255, 255, 255, 0.13);
+      box-shadow:
+        0 25px 70px rgba(0, 20, 70, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
     }
 
-    .emoji {
-      font-size: 54px;
+    .icon {
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+
+      border-radius: 24px;
+      font-size: 40px;
+
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 12px 30px rgba(0, 37, 112, 0.25);
+    }
+
+    .eyebrow {
+      margin-bottom: 8px;
+      color: #bcecff;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 4px;
     }
 
     h1 {
-      margin: 14px 0 8px;
-      font-size: 28px;
+      margin: 0;
+      font-size: clamp(30px, 8vw, 42px);
+      line-height: 1.25;
     }
 
     .date {
-      margin-bottom: 28px;
-      opacity: 0.85;
+      margin-top: 12px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 17px;
     }
 
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      gap: 10px;
+      margin-top: 32px;
     }
 
     .unit {
-      padding: 16px 4px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.18);
+      min-width: 0;
+      padding: 18px 4px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.14);
     }
 
     .number {
       display: block;
-      font-size: 30px;
-      font-weight: 800;
+      font-size: clamp(26px, 8vw, 38px);
+      font-weight: 850;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
 
     .label {
       display: block;
-      margin-top: 4px;
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.74);
       font-size: 13px;
-      opacity: 0.8;
+    }
+
+    .quote {
+      margin: 26px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 15px;
+    }
+
+    .progress-area {
+      margin-top: 24px;
+    }
+
+    .progress-track {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #69e0ff, #ffffff);
+      box-shadow: 0 0 14px rgba(105, 224, 255, 0.8);
+      transition: width 1s ease;
+    }
+
+    .progress-text {
+      margin-top: 9px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 12px;
     }
 
     #finished {
       display: none;
-      font-size: 32px;
-      font-weight: 800;
+      margin-top: 30px;
+      font-size: 34px;
+      font-weight: 850;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 430px) {
+      .card {
+        padding: 34px 14px 26px;
+      }
+
+      .countdown {
+        gap: 6px;
+      }
+
+      .unit {
+        padding: 16px 2px 14px;
+        border-radius: 15px;
+      }
+
+      .number {
+        font-size: 27px;
+      }
     }
   </style>
 </head>
 
 <body>
   <main class="card">
-    <div class="emoji">💖</div>
+    <div class="icon">🕊️</div>
 
-    <!-- 修改這裡的標題 -->
-    <h1>距離我們的旅行</h1>
+    <div class="eyebrow">FREEDOM COUNTDOWN</div>
 
-    <!-- 修改這裡顯示的日期 -->
-    <div class="date">2026 年 12 月 31 日</div>
+    <h1>距離自由還有</h1>
 
-    <div id="countdown" class="countdown">
+    <div class="date">2027 年 2 月 3 日</div>
+
+    <section id="countdown" class="countdown">
       <div class="unit">
         <span id="days" class="number">0</span>
         <span class="label">天</span>
       </div>
 
       <div class="unit">
-        <span id="hours" class="number">0</span>
+        <span id="hours" class="number">00</span>
         <span class="label">小時</span>
       </div>
 
       <div class="unit">
-        <span id="minutes" class="number">0</span>
+        <span id="minutes" class="number">00</span>
         <span class="label">分鐘</span>
       </div>
 
       <div class="unit">
-        <span id="seconds" class="number">0</span>
+        <span id="seconds" class="number">00</span>
         <span class="label">秒</span>
       </div>
+    </section>
+
+    <div id="finished">
+      我自由啦！🎉
     </div>
 
-    <div id="finished">時間到啦！🎉</div>
+    <p class="quote">每天都離自由更近一點。</p>
+
+    <div class="progress-area">
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div id="progressText" class="progress-text">
+        正在計算距離自由的進度…
+      </div>
+    </div>
   </main>
 
   <script>
-    // 修改倒數時間；+08:00 代表台灣時區
-    const targetTime = new Date("2027-02-03T23:59:59+08:00").getTime();
+    /*
+      正式離職時間：2027/2/3 凌晨 0 點，台灣時區。
+
+      如果你的意思是「2/3 下班後離職」，
+      可改成：
+      2027-02-03T18:00:00+08:00
+    */
+    const targetTime =
+      new Date("2027-02-03T18:00:00+08:00").getTime();
+
+    /*
+      進度條起算日。
+      目前設定為 2026/8/18，可自行修改。
+    */
+    const startTime =
+      new Date("2026-08-18T00:00:00+08:00").getTime();
+
+    const countdownElement =
+      document.getElementById("countdown");
+
+    const finishedElement =
+      document.getElementById("finished");
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+    const progressText =
+      document.getElementById("progressText");
+
+    function twoDigits(number) {
+      return String(number).padStart(2, "0");
+    }
 
     function updateCountdown() {
-      const remaining = targetTime - Date.now();
+      const now = Date.now();
+      const remaining = targetTime - now;
 
       if (remaining <= 0) {
-        document.getElementById("countdown").style.display = "none";
-        document.getElementById("finished").style.display = "block";
+        countdownElement.style.display = "none";
+        finishedElement.style.display = "block";
+        progressBar.style.width = "100%";
+        progressText.textContent = "離職進度 100%";
         return;
       }
 
-      document.getElementById("days").textContent =
+      const days =
         Math.floor(remaining / 86400000);
 
-      document.getElementById("hours").textContent =
+      const hours =
         Math.floor((remaining % 86400000) / 3600000);
 
-      document.getElementById("minutes").textContent =
+      const minutes =
         Math.floor((remaining % 3600000) / 60000);
 
-      document.getElementById("seconds").textContent =
+      const seconds =
         Math.floor((remaining % 60000) / 1000);
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent =
+        twoDigits(hours);
+      document.getElementById("minutes").textContent =
+        twoDigits(minutes);
+      document.getElementById("seconds").textContent =
+        twoDigits(seconds);
+
+      const totalDuration = targetTime - startTime;
+      const elapsed = now - startTime;
+
+      const percentage = Math.max(
+        0,
+        Math.min(100, (elapsed / totalDuration) * 100)
+      );
+
+      progressBar.style.width = percentage.toFixed(2) + "%";
+      progressText.textContent =
+        "離職進度 " + percentage.toFixed(1) + "%";
     }
 
     updateCountdown();
