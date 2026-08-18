@@ -69,7 +69,7 @@ jobs:
               `還有 ${days} 天 ${hours} 小時 ${minutes} 分鐘！`,
               "",
               "每天都離自由更近一點 💙",
-              "https://past795.github.io/countdown/"
+              "https://blue-freedom-day-2027.pages.dev/"
             ].join("\n");
 
             const response = await fetch(
