@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>我們的倒數計時</title>
+  <meta property="og:title" content="我們的倒數計時">
+  <meta property="og:description" content="點進來看看還剩多少時間！">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   "Noto Sans TC", sans-serif;
+      text-align: center;
+      background:
+        radial-gradient(circle at top, #ff91ac, transparent 45%),
+        linear-gradient(145deg, #ff4d79, #6c3cff);
+    }
+
+    .card {
+      width: min(440px, 100%);
+      padding: 38px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+    }
+
+    .emoji {
+      font-size: 54px;
+    }
+
+    h1 {
+      margin: 14px 0 8px;
+      font-size: 28px;
+    }
+
+    .date {
+      margin-bottom: 28px;
+      opacity: 0.85;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .unit {
+      padding: 16px 4px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .number {
+      display: block;
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .label {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+
+    #finished {
+      display: none;
+      font-size: 32px;
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <div class="emoji">💖</div>
+
+    <!-- 修改這裡的標題 -->
+    <h1>距離我們的旅行</h1>
+
+    <!-- 修改這裡顯示的日期 -->
+    <div class="date">2026 年 12 月 31 日</div>
+
+    <div id="countdown" class="countdown">
+      <div class="unit">
+        <span id="days" class="number">0</span>
+        <span class="label">天</span>
+      </div>
+
+      <div class="unit">
+        <span id="hours" class="number">0</span>
+        <span class="label">小時</span>
+      </div>
+
+      <div class="unit">
+        <span id="minutes" class="number">0</span>
+        <span class="label">分鐘</span>
+      </div>
+
+      <div class="unit">
+        <span id="seconds" class="number">0</span>
+        <span class="label">秒</span>
+      </div>
+    </div>
+
+    <div id="finished">時間到啦！🎉</div>
+  </main>
+
+  <script>
+    // 修改倒數時間；+08:00 代表台灣時區
+    const targetTime = new Date("2027-02-03T23:59:59+08:00").getTime();
+
+    function updateCountdown() {
+      const remaining = targetTime - Date.now();
+
+      if (remaining <= 0) {
+        document.getElementById("countdown").style.display = "none";
+        document.getElementById("finished").style.display = "block";
+        return;
+      }
+
+      document.getElementById("days").textContent =
+        Math.floor(remaining / 86400000);
+
+      document.getElementById("hours").textContent =
+        Math.floor((remaining % 86400000) / 3600000);
+
+      document.getElementById("minutes").textContent =
+        Math.floor((remaining % 3600000) / 60000);
+
+      document.getElementById("seconds").textContent =
+        Math.floor((remaining % 60000) / 1000);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
