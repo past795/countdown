@@ -2,8 +2,8 @@ name: LINE 離職倒數提醒
 
 on:
   schedule:
-    # UTC 01:00 = 台灣時間早上 09:00
-    - cron: "0 1 * * *"
+    # UTC 01:00 = 台灣時間早上 09:05
+    - cron: "5 1 * * *"
 
   workflow_dispatch:
 
